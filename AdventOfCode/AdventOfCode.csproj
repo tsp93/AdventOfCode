@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -10,11 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
     <PackageReference Include="Syncfusion.Blazor" Version="20.3.0.59" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="20.3.0.59" />
     <PackageReference Include="Syncfusion.Licensing" Version="20.3.0.59" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Shared\Components\" />
   </ItemGroup>
 
 </Project>
