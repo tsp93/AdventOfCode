@@ -11,13 +11,13 @@ namespace AdventOfCode.Pages
         [Inject]
         private ISolver Solver { get; set; }
 
-        private InputFileAdvent InputFile { get; set; }
-        private string Solution { get; set; }
-        private AdventDays AdventDay { get; set; }
+        public List<string> Inputs { get; set; }
+        public AdventDays AdventDay { get; set; }
+        public List<string> Solutions { get; set; }
 
         private void SolveForInput()
         {
-
+            this.Solutions = this.Solver.GetSolution(this.Inputs, this.AdventDay);
         }
     }
 }

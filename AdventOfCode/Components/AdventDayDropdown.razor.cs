@@ -5,8 +5,10 @@ namespace AdventOfCode.Components
 {
     public partial class AdventDayDropdown : ComponentBase
     {
-
+        [Parameter]
         public AdventDays SelectedAdventDay { get; set; } = AdventDays.Day1;
+        [Parameter]
+        public EventCallback<AdventDays> SelectedAdventDayChanged { get; set; }
         private string SelectedAdventDayString
         {
             get => this.SelectedAdventDay.ToString();
@@ -15,6 +17,7 @@ namespace AdventOfCode.Components
                 AdventDays test;
                 Enum.TryParse(value, out test);
                 this.SelectedAdventDay = test;
+                SelectedAdventDayChanged.InvokeAsync(this.SelectedAdventDay);
             }
         }
 

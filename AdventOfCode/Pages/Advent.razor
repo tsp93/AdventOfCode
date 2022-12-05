@@ -4,6 +4,13 @@
 
 <h1>Advent of Code</h1>
 
-<AdventDayDropdown />
+<div>
 
-<InputFileAdvent @ref=InputFile/>
+    <AdventDayDropdown @bind-SelectedAdventDay=@AdventDay/>
+
+    <InputFileAdvent @bind-InputStrings=@Inputs />
+
+    <SfButton OnClick=@SolveForInput>Solve</SfButton>
+
+    <ResultDisplayer Results=@Solutions/>
+</div>

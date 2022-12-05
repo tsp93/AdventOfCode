@@ -4,6 +4,6 @@ namespace AdventOfCode.Services.Solvers
 {
     public interface ISolver
     {
-        string GetSolution(List<string> inputs, AdventDays day);
+        List<string> GetSolution(List<string> input, AdventDays day);
     }
 }
