@@ -27,11 +27,5 @@
         Day23,
         Day24,
         Day25,
-        Day26,
-        Day27,
-        Day28,
-        Day29,
-        Day30,
-        Day31,
     }
 }
