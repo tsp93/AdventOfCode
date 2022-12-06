@@ -7,7 +7,7 @@ namespace AdventOfCode.Services.Solvers
         public List<string> GetSolution(List<string> input, AdventDays day) => day switch
         {
             AdventDays.Day1 => SolveDay1(input),
-            AdventDays.Day2 => throw new NotImplementedException(),
+            AdventDays.Day2 => SolveDay2(input),
             AdventDays.Day3 => throw new NotImplementedException(),
             AdventDays.Day4 => throw new NotImplementedException(),
             AdventDays.Day5 => throw new NotImplementedException(),
