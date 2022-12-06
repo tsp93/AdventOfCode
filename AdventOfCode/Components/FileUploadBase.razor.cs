@@ -10,6 +10,9 @@ namespace AdventOfCode.Components
         [Parameter]
         public EventCallback<byte[]> FileBytesChanged { get; set; }
 
+        [Parameter]
+        public string CssClass { get; set; }
+
         private void OnChange(UploadChangeEventArgs args)
         {
             foreach (var file in args.Files)

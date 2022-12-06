@@ -6,8 +6,12 @@ namespace AdventOfCode.Components
     {
         [Parameter]
         public List<string> InputStrings { get; set; }
+
         [Parameter]
         public EventCallback<List<string>> InputStringsChanged { get; set; }
+
+        [Parameter]
+        public string CssClass { get; set; }
 
         public async void FileUploaded(byte[] fileBytes)
         {

@@ -1,16 +1,19 @@
-﻿@page "/adventofcode"
+﻿@page "/adventofcode2022"
 
 <PageTitle>Advent of Code</PageTitle>
 
 <h1>Advent of Code</h1>
 
-<div>
+<div class="d-flex flex-row">
+    <div class="col-12 col-sm-6">
+        <AdventDayDropdown @bind-SelectedAdventDay=@AdventDay />
 
-    <AdventDayDropdown @bind-SelectedAdventDay=@AdventDay/>
+        <InputFileAdvent CssClass="my-3" @bind-InputStrings=@Inputs />
 
-    <InputFileAdvent @bind-InputStrings=@Inputs />
+        <SfButton OnClick=@SolveForInput>Solve</SfButton>
 
-    <SfButton OnClick=@SolveForInput>Solve</SfButton>
-
-    <ResultDisplayer Results=@Solutions/>
+    </div>
+    <div class="col-12 col-sm-6">
+        <ResultDisplayer Results=@Solutions />
+    </div>
 </div>
