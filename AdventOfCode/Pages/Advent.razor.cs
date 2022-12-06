@@ -2,7 +2,6 @@
 using AdventOfCode.Enums;
 using AdventOfCode.Services.Solvers;
 using Microsoft.AspNetCore.Components;
-using System.Collections;
 
 namespace AdventOfCode.Pages
 {
@@ -17,7 +16,16 @@ namespace AdventOfCode.Pages
 
         private void SolveForInput()
         {
-            this.Solutions = this.Solver.GetSolution(this.Inputs, this.AdventDay);
+            this.Solutions = new List<string>();
+            try
+            {
+                this.Solutions = this.Solver.GetSolution(this.Inputs, this.AdventDay);
+            }
+            catch(Exception ex)
+            {
+                this.Solutions.Add("Input for the day in question is probably wrong, actual error is:");
+                this.Solutions.Add(ex.Message);
+            }
         }
     }
 }
