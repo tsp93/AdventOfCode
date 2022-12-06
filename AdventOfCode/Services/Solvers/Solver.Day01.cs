@@ -11,6 +11,11 @@
             };
         }
 
+        /// <summary>
+        /// Finds the elf with the most calories
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Calories</returns>
         private int FindElfWithMostCalories(List<string> input)
         {
             Dictionary<int, int> totalCalPerElf = GetTotalCaloriesPerElf(input);
@@ -19,6 +24,11 @@
             return elfWithDaMost;
         }
 
+        /// <summary>
+        /// Finds the top three elves with the most calories
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Sum of calories</returns>
         private int FindTopThreeElvesWithMostCalories(List<string> input)
         {
             Dictionary<int, int> totalCalPerElf = GetTotalCaloriesPerElf(input);
@@ -27,6 +37,11 @@
             return topThreeElvesWithDaMost;
         }
 
+        /// <summary>
+        /// Converts input into a dictionary with total calories per elf
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Dictionary of elf per total calories</returns>
         private Dictionary<int, int> GetTotalCaloriesPerElf(List<string> input)
         {
             Dictionary<int, List<int>> calPerElf = new Dictionary<int, List<int>>();

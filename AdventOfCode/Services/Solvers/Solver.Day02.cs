@@ -13,6 +13,11 @@ namespace AdventOfCode.Services.Solvers
             };
         }
 
+        /// <summary>
+        /// Gets total score of the strategy guide the elf gave, with no instructions on how to use it
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Total score</returns>
         private int TotalScoreFromStrategyGuideWithWrongInfo(List<string> input)
         {
             List<(string Opponent, string Player)> opponentVsPlayer = input.Select(x => x.Split(' ')).Select(x => (x[0], x[1])).ToList();
@@ -26,6 +31,11 @@ namespace AdventOfCode.Services.Solvers
             return scorePerRound.Sum();
         }
 
+        /// <summary>
+        /// Gets total score of the strategy guide the elf gave, with instructions on how to use it
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Total score</returns>
         private int TotalScoreFromStrategyGuideWithRightInfo(List<string> input)
         {
             List<(string Opponent, string Result)> opponentVsPlayer = input.Select(x => x.Split(' ')).Select(x => (x[0], x[1])).ToList();
@@ -41,6 +51,12 @@ namespace AdventOfCode.Services.Solvers
             return scorePerRound.Sum();
         }
 
+        /// <summary>
+        /// Finds what player should play according to the strategy guide
+        /// </summary>
+        /// <param name="opponentPlayed"></param>
+        /// <param name="neededResult"></param>
+        /// <returns>RockPaperScissors</returns>
         private RockPaperScissors RockPaperScissorsShouldPlay(RockPaperScissors opponentPlayed, RockPaperScissorsResult neededResult)
         {
             switch (opponentPlayed)
@@ -79,49 +95,57 @@ namespace AdventOfCode.Services.Solvers
             return RockPaperScissors.Rock;
         }
 
+        /// <summary>
+        /// Rock, paper, scissors game logic
+        /// </summary>
+        /// <param name="opponentPlayed"></param>
+        /// <param name="playerPlayed"></param>
+        /// <returns>Score</returns>
         private int RockPaperScissorsScorer(RockPaperScissors opponentPlayed, RockPaperScissors playerPlayed)
         {
-            int win = 6;
-            int tie = 3;
-            int loss = 0;
             int score = (int)playerPlayed;
-
             switch (opponentPlayed)
             {
                 case RockPaperScissors.Rock:
                     switch (playerPlayed)
                     {
                         case RockPaperScissors.Paper:
-                            return score + win;
+                            return score + (int)RockPaperScissorsResult.Win;
                         case RockPaperScissors.Scissors:
-                            return score + loss;
+                            return score + (int)RockPaperScissorsResult.Loss;
                         default:
-                            return score + tie;
+                            return score + (int)RockPaperScissorsResult.Tie;
                     }
                 case RockPaperScissors.Paper:
                     switch (playerPlayed)
                     {
                         case RockPaperScissors.Scissors:
-                            return score + win;
+                            return score + (int)RockPaperScissorsResult.Win;
                         case RockPaperScissors.Rock:
-                            return score + loss;
+                            return score + (int)RockPaperScissorsResult.Loss;
                         default:
-                            return score + tie;
+                            return score + (int)RockPaperScissorsResult.Tie;
                     }
                 case RockPaperScissors.Scissors:
                     switch (playerPlayed)
                     {
                         case RockPaperScissors.Rock:
-                            return score + win;
+                            return score + (int)RockPaperScissorsResult.Win;
                         case RockPaperScissors.Paper:
-                            return score + loss;
+                            return score + (int)RockPaperScissorsResult.Loss;
                         default:
-                            return score + tie;
+                            return score + (int)RockPaperScissorsResult.Tie;
                     }
             }
             return 0;
         }
 
+        /// <summary>
+        /// Converts inputstring to RockPaperScissorsResult
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>RockPaperScissorsResult</returns>
+        /// <exception cref="Exception"></exception>
         private RockPaperScissorsResult RockPaperScissorsResultConverter(string result) => result switch
         {
             "X" => RockPaperScissorsResult.Loss,
@@ -130,6 +154,12 @@ namespace AdventOfCode.Services.Solvers
             _ => throw new Exception("Invalid result string"),
         };
 
+        /// <summary>
+        /// Converts string to RockPaperScissors
+        /// </summary>
+        /// <param name="rockPaperScissor"></param>
+        /// <returns>RockPaperScissors</returns>
+        /// <exception cref="Exception"></exception>
         private RockPaperScissors RockPaperScissorsConverter(string rockPaperScissor) => rockPaperScissor switch
         {
             "A" or "X" => RockPaperScissors.Rock,
