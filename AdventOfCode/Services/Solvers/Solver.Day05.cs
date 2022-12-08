@@ -43,7 +43,7 @@
                 for (int i = 0; i < move.amount; i++)
                 {
                     string crate = crates[move.columnFrom].Last();
-                    crates[move.columnFrom].Remove(crate);
+                    crates[move.columnFrom].RemoveAt(crates[move.columnFrom].Count - 1);
                     crates[move.columnTo].Add(crate);
                 }
             }
@@ -62,8 +62,8 @@
             crates.RemoveAt(crates.Count - 1);
 
             List<int> columnNumbersParsed = columnNumbers.Split(" ")
-                                                         .Where(x => !string.IsNullOrEmpty(x))
-                                                         .Select(x => Util.StringToInt(x))
+                                                         .Where(x => !Util.IsEmptyString(x))
+                                                         .Select(Util.StringToInt)
                                                          .ToList();
             List<int> setColumnNumbers = Enumerable.Range(1, columnNumbersParsed.Count).ToList();
             int columns = columnNumbersParsed.Last();
@@ -80,7 +80,7 @@
                     try
                     {
                         string crate = crates[i][positionCounter + j * spacing].ToString();
-                        if (!string.IsNullOrEmpty(crate.Trim()))
+                        if (!Util.IsEmptyString(crate))
                         {
                             crateMatrixDict[j + 1].Add(crate);
                         }
