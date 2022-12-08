@@ -6,8 +6,8 @@
         {
             return new List<string>
             {
-                SupplyCratesOnTopOfEachStack(input),
-                //SupplyCrates(input).ToString()
+                CraneMover9000(input),
+                CraneMover9001(input),
             };
         }
 
@@ -16,12 +16,27 @@
         /// </summary>
         /// <param name="input"></param>
         /// <returns>String of top crates</returns>
-        private string SupplyCratesOnTopOfEachStack(List<string> input)
+        private string CraneMover9000(List<string> input)
         {
             List<string> crates = input.Where(x => !x.StartsWith("move")).Where(x => !Util.IsEmptyString(x)).ToList();
             List<string> moves = input.Where(x => x.StartsWith("move")).ToList();
             Dictionary<int, List<string>> crateMatrix = CrateMatrixMaker(crates);
-            Dictionary<int, List<string>> movedCrates = MoveCrates(moves, crateMatrix);
+            Dictionary<int, List<string>> movedCrates = MoveCrates(moves, crateMatrix, true);
+
+            return string.Join("", movedCrates.Select(x => x.Value.Last()));
+        }
+
+        /// <summary>
+        /// Retrieves crates on top of each stack after the series of movements in the input have been made
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>String of top crates</returns>
+        private string CraneMover9001(List<string> input)
+        {
+            List<string> crates = input.Where(x => !x.StartsWith("move")).Where(x => !Util.IsEmptyString(x)).ToList();
+            List<string> moves = input.Where(x => x.StartsWith("move")).ToList();
+            Dictionary<int, List<string>> crateMatrix = CrateMatrixMaker(crates);
+            Dictionary<int, List<string>> movedCrates = MoveCrates(moves, crateMatrix, false);
 
             return string.Join("", movedCrates.Select(x => x.Value.Last()));
         }
@@ -30,21 +45,33 @@
         /// Applies moves to crates
         /// </summary>
         /// <param name="moves"></param>
+        /// <param name="crates"></param>
+        /// <param name="craneMover9000"></param>
         /// <returns>Moved crates</returns>
-        private Dictionary<int, List<string>> MoveCrates(List<string> moves, Dictionary<int, List<string>> crates)
+        private Dictionary<int, List<string>> MoveCrates(List<string> moves, Dictionary<int, List<string>> crates, bool craneMover9000)
         {
             List<(int amount, int columnFrom, int columnTo)> movesTransformed =
                 moves.Select(x => x.Split(" ").Where(x => Util.IsNumber(x)).ToList())
                      .Select(x => (Util.StringToInt(x[0]), Util.StringToInt(x[1]), Util.StringToInt(x[2])))
                      .ToList();
-
+            
             foreach(var move in movesTransformed)
             {
-                for (int i = 0; i < move.amount; i++)
+                if (craneMover9000)
                 {
-                    string crate = crates[move.columnFrom].Last();
-                    crates[move.columnFrom].RemoveAt(crates[move.columnFrom].Count - 1);
-                    crates[move.columnTo].Add(crate);
+                    for (int i = 0; i < move.amount; i++)
+                    {
+                        string crate = crates[move.columnFrom].Last();
+                        crates[move.columnFrom].RemoveAt(crates[move.columnFrom].Count - 1);
+                        crates[move.columnTo].Add(crate);
+                    }
+                }
+                else
+                {
+                    int startPos = crates[move.columnFrom].Count() - move.amount;
+                    List<string> cratesToMove = crates[move.columnFrom].Skip(startPos).Take(move.amount).ToList();
+                    crates[move.columnFrom].RemoveRange(startPos, move.amount);
+                    crates[move.columnTo].AddRange(cratesToMove);
                 }
             }
 
