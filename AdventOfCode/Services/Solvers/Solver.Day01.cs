@@ -50,7 +50,7 @@
 
             foreach (string inpy in input)
             {
-                if (string.IsNullOrEmpty(inpy))
+                if (Util.IsEmptyString(inpy))
                 {
                     calPerElf.Add(elfNum, calList);
                     calList = new List<int>();
@@ -58,7 +58,7 @@
                 }
                 else
                 {
-                    calList.Add(int.Parse(inpy));
+                    calList.Add(Util.StringToInt(inpy));
                 }
             }
 

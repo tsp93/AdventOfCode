@@ -18,7 +18,7 @@
         /// <returns>String of top crates</returns>
         private string SupplyCratesOnTopOfEachStack(List<string> input)
         {
-            List<string> crates = input.Where(x => !x.StartsWith("move")).Where(x => !string.IsNullOrEmpty(x)).ToList();
+            List<string> crates = input.Where(x => !x.StartsWith("move")).Where(x => !Util.IsEmptyString(x)).ToList();
             List<string> moves = input.Where(x => x.StartsWith("move")).ToList();
             Dictionary<int, List<string>> crateMatrix = CrateMatrixMaker(crates);
             Dictionary<int, List<string>> movedCrates = MoveCrates(moves, crateMatrix);

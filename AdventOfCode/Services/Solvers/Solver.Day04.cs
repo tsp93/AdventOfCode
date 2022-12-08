@@ -43,9 +43,9 @@
         private bool RangesContainEithorOfOther(string firstRange, string secondRange)
         {
             string[] firstRangeNumbers = firstRange.Split('-');
-            (int firstBeginRange, int firstEndRange) = (int.Parse(firstRangeNumbers[0]), int.Parse(firstRangeNumbers[1]));
+            (int firstBeginRange, int firstEndRange) = (Util.StringToInt(firstRangeNumbers[0]), Util.StringToInt(firstRangeNumbers[1]));
             string[] secondRangeNumbers = secondRange.Split('-');
-            (int secondBeginRange, int secondEndRange) = (int.Parse(secondRangeNumbers[0]), int.Parse(secondRangeNumbers[1]));
+            (int secondBeginRange, int secondEndRange) = (Util.StringToInt(secondRangeNumbers[0]), Util.StringToInt(secondRangeNumbers[1]));
 
             return (firstBeginRange <= secondBeginRange && firstEndRange >= secondEndRange)
                 || (secondBeginRange <= firstBeginRange && secondEndRange >= firstEndRange);
@@ -59,9 +59,9 @@
         private bool RangesOverlap(string firstRange, string secondRange)
         {
             string[] firstRangeNumbers = firstRange.Split('-');
-            (int firstBeginRange, int firstEndRange) = (int.Parse(firstRangeNumbers[0]), int.Parse(firstRangeNumbers[1]));
+            (int firstBeginRange, int firstEndRange) = (Util.StringToInt(firstRangeNumbers[0]), Util.StringToInt(firstRangeNumbers[1]));
             string[] secondRangeNumbers = secondRange.Split('-');
-            (int secondBeginRange, int secondEndRange) = (int.Parse(secondRangeNumbers[0]), int.Parse(secondRangeNumbers[1]));
+            (int secondBeginRange, int secondEndRange) = (Util.StringToInt(secondRangeNumbers[0]), Util.StringToInt(secondRangeNumbers[1]));
 
             return (firstBeginRange >= secondBeginRange && firstBeginRange <= secondEndRange)
                 || (secondBeginRange >= firstBeginRange && secondBeginRange <= firstEndRange)
