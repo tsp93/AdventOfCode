@@ -1,16 +1,24 @@
 ﻿using AdventOfCode.Enums;
+using AdventOfCode.Services.Utils;
 
 namespace AdventOfCode.Services.Solvers
 {
     public partial class Solver : ISolver
     {
+        private readonly IUtil Util;
+
+        public Solver(IUtil Util)
+        {
+            this.Util = Util;
+        }
+
         public List<string> GetSolution(List<string> input, AdventDays day) => day switch
         {
             AdventDays.Day1 => SolveDay1(input),
             AdventDays.Day2 => SolveDay2(input),
             AdventDays.Day3 => SolveDay3(input),
             AdventDays.Day4 => SolveDay4(input),
-            AdventDays.Day5 => throw new NotImplementedException(),
+            AdventDays.Day5 => SolveDay5(input),
             AdventDays.Day6 => throw new NotImplementedException(),
             AdventDays.Day7 => throw new NotImplementedException(),
             AdventDays.Day8 => throw new NotImplementedException(),

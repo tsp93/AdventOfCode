@@ -1,5 +1,6 @@
 using AdventOfCode;
 using AdventOfCode.Services.Solvers;
+using AdventOfCode.Services.Utils;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -14,7 +15,9 @@ Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(license);
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSyncfusionBlazor();
+
 builder.Services.AddScoped<ISolver, Solver>();
+builder.Services.AddScoped<IUtil, Util>();
 
 await builder.Build().RunAsync();
 
