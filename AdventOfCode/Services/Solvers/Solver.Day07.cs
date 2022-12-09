@@ -24,6 +24,11 @@
             return SumDirSizes(dirTree, maxFileSize);
         }
 
+        /// <summary>
+        /// Removes the smallest directory from directories according to the input given
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private int RemoveSmallestDirectoryToFreeUpSpace(List<string> input)
         {
             Directory dirTree = ExecuteCommands(input);
