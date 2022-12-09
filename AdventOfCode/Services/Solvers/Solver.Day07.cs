@@ -19,9 +19,46 @@
         private int TotalSizeOfDirectoriesAboveCertainSize(List<string> input)
         {
             Directory dirTree = ExecuteCommands(input);
+            dirTree = SetDirSizes(dirTree);
+            int maxFileSize = 100000;
+            return SumDirSizes(dirTree, maxFileSize);
+        }
 
-            
-            return 0;
+        /// <summary>
+        /// Sums the directory sizes if their size is <= 100.000
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns>Sum of directory sizes</returns>
+        private int SumDirSizes(Directory dir, int maxFileSize)
+        {
+            int sum = dir.DirSize <= maxFileSize ? dir.DirSize : 0;
+            if (dir.ChildDirectories.Count > 0)
+            {
+                foreach (Directory child in dir.ChildDirectories)
+                {
+                    sum += SumDirSizes(child, maxFileSize);
+                }
+            }
+            return sum;
+        }
+
+        /// <summary>
+        /// Sets the sizes of each directory in directory tree
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private Directory SetDirSizes(Directory dir)
+        {
+            int thisDirFileSize = dir.Files.Select(x => x.FileSize).Sum();
+            if (dir.ChildDirectories.Count > 0)
+            {
+                foreach (Directory child in dir.ChildDirectories)
+                {
+                    thisDirFileSize += SetDirSizes(child).DirSize;
+                }
+            }
+            dir.DirSize = thisDirFileSize;
+            return dir;
         }
 
         /// <summary>
@@ -80,6 +117,7 @@
             new Directory
             {
                 Name = dirName,
+                DirSize = 0,
                 ParentDirectory = parent,
                 ChildDirectories = new(),
                 Files = new(),
@@ -93,7 +131,7 @@
         private FileNode CreateFile(List<string> fileInfo) =>
             new FileNode
             {
-                FileSize = fileInfo[0],
+                FileSize = Util.StringToInt(fileInfo[0]),
                 FileName = fileInfo[1],
             };
 
@@ -103,6 +141,7 @@
         private class Directory
         {
             public string Name { get; set; }
+            public int DirSize { get; set; }
             public Directory ParentDirectory { get; set; }
             public List<Directory> ChildDirectories { get; set; }
             public List<FileNode> Files { get; set; }
@@ -114,7 +153,7 @@
         private class FileNode
         {
             public string FileName { get; set; }
-            public string FileSize { get; set; }
+            public int FileSize { get; set; }
         }
     }
 }
