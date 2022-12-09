@@ -7,7 +7,7 @@
             return new List<string>
             {
                 TotalSizeOfDirectoriesAboveCertainSize(input).ToString(),
-                //GetStartMarker(input).ToString(),
+                RemoveSmallestDirectoryToFreeUpSpace(input).ToString(),
             };
         }
 
@@ -22,6 +22,52 @@
             dirTree = SetDirSizes(dirTree);
             int maxFileSize = 100000;
             return SumDirSizes(dirTree, maxFileSize);
+        }
+
+        private int RemoveSmallestDirectoryToFreeUpSpace(List<string> input)
+        {
+            Directory dirTree = ExecuteCommands(input);
+            dirTree = SetDirSizes(dirTree);
+
+            int totalDiskSize = 70000000;
+            int requiredUnusedSpace = 30000000;
+            int maxSpaceAllowed = totalDiskSize - requiredUnusedSpace;
+            int totalDirSize = dirTree.DirSize;
+
+            Directory delDir = CreateDir("Test", null);
+            delDir.DirSize = 0;
+            if (totalDirSize > maxSpaceAllowed)
+            {
+                delDir = FindSmallestDirToDelete(dirTree, totalDirSize - maxSpaceAllowed);
+            }
+
+            return delDir.DirSize;
+        }
+
+        /// <summary>
+        /// Finds smallest directory that is closest to the amount of space to get rid of,
+        /// without going under it
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <param name="spaceToGetRidOf"></param>
+        /// <returns></returns>
+        private Directory FindSmallestDirToDelete(Directory dir, int spaceToGetRidOf)
+        {
+            Directory smallest = dir;
+            if (dir.ChildDirectories.Any())
+            {
+                foreach (Directory child in dir.ChildDirectories)
+                {
+                    int diff = smallest.DirSize - spaceToGetRidOf;
+                    int childDiff = child.DirSize - spaceToGetRidOf;
+
+                    if (diff >= 0 && childDiff >= 0 && diff > childDiff)
+                    {
+                        smallest = FindSmallestDirToDelete(child, spaceToGetRidOf);
+                    }
+                }
+            }
+            return smallest;
         }
 
         /// <summary>
@@ -146,7 +192,7 @@
             public List<Directory> ChildDirectories { get; set; }
             public List<FileNode> Files { get; set; }
         }
-        
+
         /// <summary>
         /// FileNode that will appear in a directory tree
         /// </summary>
