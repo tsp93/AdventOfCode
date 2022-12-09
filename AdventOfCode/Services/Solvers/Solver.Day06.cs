@@ -12,9 +12,10 @@
         }
 
         /// <summary>
-        /// Takes in an input string and finds the first 4 row of chars, each of which are distinct
+        /// Takes in an input string and finds the first X row of chars, each of which are distinct
         /// </summary>
         /// <param name="input"></param>
+        /// <param name="amountOfCharsNeeded"></param>
         /// <returns></returns>
         private int GetStartMarker(List<string> input, int amountOfCharsNeeded)
         {

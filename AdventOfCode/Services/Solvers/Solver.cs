@@ -20,7 +20,7 @@ namespace AdventOfCode.Services.Solvers
             AdventDays.Day4 => SolveDay4(input),
             AdventDays.Day5 => SolveDay5(input),
             AdventDays.Day6 => SolveDay6(input),
-            AdventDays.Day7 => throw new NotImplementedException(),
+            AdventDays.Day7 => SolveDay7(input),
             AdventDays.Day8 => throw new NotImplementedException(),
             AdventDays.Day9 => throw new NotImplementedException(),
             AdventDays.Day10 => throw new NotImplementedException(),
