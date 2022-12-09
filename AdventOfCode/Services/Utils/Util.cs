@@ -11,8 +11,7 @@
         public bool IsNumber(string s) =>
             int.TryParse(s, out _);
 
-        public bool IsEmptyString(string s) => 
+        public bool IsEmptyString(string s) =>
             string.IsNullOrEmpty(s.Trim());
-
     }
 }
