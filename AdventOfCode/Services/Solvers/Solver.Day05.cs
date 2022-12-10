@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay5(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay5(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 CraneMover9000(input),
                 CraneMover9001(input),
-            };
-        }
+            });
 
         /// <summary>
         /// Retrieves crates on top of each stack after the series of movements in the input have been made
@@ -54,8 +52,8 @@
                 moves.Select(x => x.Split(" ").Where(x => Util.IsNumber(x)).ToList())
                      .Select(x => (Util.StringToInt(x[0]), Util.StringToInt(x[1]), Util.StringToInt(x[2])))
                      .ToList();
-            
-            foreach(var move in movesTransformed)
+
+            foreach (var move in movesTransformed)
             {
                 if (craneMover9000)
                 {

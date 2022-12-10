@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay4(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay4(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 AssignmentPairsFullyContainsOther(input).ToString(),
-                AssignmentPairsOverlapOther(input).ToString()
-            };
-        }
+                AssignmentPairsOverlapOther(input).ToString(),
+            });
 
         /// <summary>
         /// Takes in input list of pairs of ranges and sums the count of ones fully containing the other

@@ -14,14 +14,14 @@ namespace AdventOfCode.Services.Solvers
 
         public async Task<List<string>> GetSolution(List<string> input, AdventDays day) => day switch
         {
-            AdventDays.Day1 => SolveDay1(input),
-            AdventDays.Day2 => SolveDay2(input),
-            AdventDays.Day3 => SolveDay3(input),
-            AdventDays.Day4 => SolveDay4(input),
-            AdventDays.Day5 => SolveDay5(input),
-            AdventDays.Day6 => SolveDay6(input),
-            AdventDays.Day7 => SolveDay7(input),
-            AdventDays.Day8 => SolveDay8(input),
+            AdventDays.Day1 => await SolveDay1(input),
+            AdventDays.Day2 => await SolveDay2(input),
+            AdventDays.Day3 => await SolveDay3(input),
+            AdventDays.Day4 => await SolveDay4(input),
+            AdventDays.Day5 => await SolveDay5(input),
+            AdventDays.Day6 => await SolveDay6(input),
+            AdventDays.Day7 => await SolveDay7(input),
+            AdventDays.Day8 => await SolveDay8(input),
             AdventDays.Day9 => throw new NotImplementedException(),
             AdventDays.Day10 => throw new NotImplementedException(),
             AdventDays.Day11 => throw new NotImplementedException(),

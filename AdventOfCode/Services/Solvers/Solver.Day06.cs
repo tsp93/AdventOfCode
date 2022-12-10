@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay6(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay6(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 GetStartMarker(input, 4).ToString(),
                 GetStartMarker(input, 14).ToString(),
-            };
-        }
+            });
 
         /// <summary>
         /// Takes in an input string and finds the first X row of chars, each of which are distinct

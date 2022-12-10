@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay7(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay7(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 TotalSizeOfDirectoriesAboveCertainSize(input).ToString(),
                 RemoveSmallestDirectoryToFreeUpSpace(input).ToString(),
-            };
-        }
+            });
 
         /// <summary>
         /// Calculates and sums the total size of directories according to the input given

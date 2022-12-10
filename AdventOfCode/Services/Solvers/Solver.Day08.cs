@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay8(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay8(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 TreesVisibleFromOutsideGrid(input).ToString(),
                 FindHighestScenicScore(input).ToString(),
-            };
-        }
+            });
 
         /// <summary>
         /// Finds trees in a grid that are visible from the outside

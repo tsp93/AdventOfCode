@@ -4,14 +4,13 @@ namespace AdventOfCode.Services.Solvers
 {
     public partial class Solver
     {
-        private List<string> SolveDay2(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay2(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 TotalScoreFromStrategyGuideWithWrongInfo(input).ToString(),
-                TotalScoreFromStrategyGuideWithRightInfo(input).ToString()
-            };
-        }
+                TotalScoreFromStrategyGuideWithRightInfo(input).ToString(),
+            });
+
 
         /// <summary>
         /// Gets total score of the strategy guide the elf gave, with no instructions on how to use it

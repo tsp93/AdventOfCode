@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay1(List<string> input)
-        {
-            return new List<string>
+        private Task<List<string>> SolveDay1(List<string> input) =>
+            Task.FromResult(new List<string>
             {
                 FindElfWithMostCalories(input).ToString(),
-                FindTopThreeElvesWithMostCalories(input).ToString()
-            };
-        }
+                FindTopThreeElvesWithMostCalories(input).ToString(),
+            });
 
         /// <summary>
         /// Finds the elf with the most calories

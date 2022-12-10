@@ -2,14 +2,12 @@
 {
     public partial class Solver
     {
-        private List<string> SolveDay3(List<string> input)
-        {
-            return new List<string>
-            {
+        private Task<List<string>> SolveDay3(List<string> input) =>
+            Task.FromResult(new List<string>
+            { 
                 SumPriorityInRucksack(input).ToString(),
-                SumBadgePriorityInRucksack(input).ToString()
-            };
-        }
+                SumBadgePriorityInRucksack(input).ToString(),
+            });
 
         /// <summary>
         /// Splits input strings into two equal strings(compartments)
