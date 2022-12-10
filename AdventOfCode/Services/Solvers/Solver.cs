@@ -12,7 +12,7 @@ namespace AdventOfCode.Services.Solvers
             this.Util = Util;
         }
 
-        public List<string> GetSolution(List<string> input, AdventDays day) => day switch
+        public async Task<List<string>> GetSolution(List<string> input, AdventDays day) => day switch
         {
             AdventDays.Day1 => SolveDay1(input),
             AdventDays.Day2 => SolveDay2(input),

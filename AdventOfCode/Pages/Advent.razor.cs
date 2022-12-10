@@ -13,19 +13,22 @@ namespace AdventOfCode.Pages
         public List<string> Inputs { get; set; }
         public AdventDays AdventDay { get; set; }
         public List<string> Solutions { get; set; }
+        private Spinner Spinner { get; set; }
 
-        private void SolveForInput()
+        private async void SolveForInput()
         {
             this.Solutions = new List<string>();
+            this.Spinner.Show();
             try
             {
-                this.Solutions = this.Solver.GetSolution(this.Inputs, this.AdventDay);
+                this.Solutions = await this.Solver.GetSolution(this.Inputs, this.AdventDay);
             }
             catch(Exception ex)
             {
                 this.Solutions.Add("Input for the day in question is probably wrong, actual error is:");
                 this.Solutions.Add(ex.Message);
             }
+            this.Spinner.Hide();
         }
     }
 }
