@@ -6,5 +6,6 @@
         int StringToInt(string s);
         bool IsNumber(string s);
         bool IsEmptyString(string s);
+        int Abs(int x);
     }
 }

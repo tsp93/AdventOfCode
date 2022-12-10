@@ -13,5 +13,8 @@
 
         public bool IsEmptyString(string s) =>
             string.IsNullOrEmpty(s.Trim());
+
+        public int Abs(int x) =>
+            Math.Abs(x);
     }
 }
