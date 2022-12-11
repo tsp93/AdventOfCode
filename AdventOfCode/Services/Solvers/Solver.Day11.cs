@@ -39,7 +39,7 @@ namespace AdventOfCode.Services.Solvers
         /// <returns></returns>
         private Dictionary<int, Monkey> MonkeyInspections(Dictionary<int, Monkey> monkeys, int rounds, int worryLevel)
         {
-            decimal lowestSameNumber = monkeys.Values.Select(x => x.TestDivisibleBy).Aggregate((a, b) => a * b);
+            decimal lowestCommonDenominator = monkeys.Values.Select(x => x.TestDivisibleBy).Aggregate((a, b) => a * b);
             for (int i = 0; i < rounds; i++)
             {
                 foreach (var monkey in monkeys)
@@ -59,7 +59,7 @@ namespace AdventOfCode.Services.Solvers
                         }
                         val = Util.Floor(val / worryLevel);
                         decimal remainder = val % monkey.Value.TestDivisibleBy;
-                        val = val % lowestSameNumber;
+                        val = val % lowestCommonDenominator;
                         if (remainder == 0)
                         {
                             monkeys[monkey.Value.ThrowToTrue].StartingItems.Add(val);
