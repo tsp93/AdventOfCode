@@ -38,6 +38,15 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
 
+    - name: Publish
+      run: dotnet publish AdventOfCode/AdventOfCode.csproj -c Release -o release — nologo
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Artifact
+        path: /home/runner/work/AdventOfCode/AdventOfCode/release/
+
     - name: Deploy
       uses: actions/deploy-pages@v1
     
