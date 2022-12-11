@@ -29,5 +29,5 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Deploy
-      uses: actions/deploy-pages
+      uses: actions/deploy-pages@v1
     
