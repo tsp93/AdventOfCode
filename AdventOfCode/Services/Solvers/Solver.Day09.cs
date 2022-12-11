@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Services.Solvers
+﻿using Syncfusion.Blazor.RichTextEditor.Internal;
+
+namespace AdventOfCode.Services.Solvers
 {
     public partial class Solver
     {
@@ -6,7 +8,7 @@
             Task.FromResult(new List<string>
             {
                 RopeTailVisited(input).ToString(),
-                //FindHighestScenicScore(input).ToString(),
+                LongerRopeTailVisited(input).ToString(),
             });
 
 
@@ -23,7 +25,24 @@
             (int rowSize, int colSize, int startX, int startY) = CalculateMatrixSize(instructions);
 
             int[,] ropeBridgeMatrix = new int[rowSize, colSize];
-            int[,] traversedRopeBridge = ApplyRopeInstructions(instructions, ropeBridgeMatrix, startX, startY);
+            int[,] traversedRopeBridge = ApplyRopeInstructions(instructions, ropeBridgeMatrix, startX, startY, 1);
+            return CountPlacesTailHasTraveled(traversedRopeBridge);
+        }
+
+        /// <summary>
+        /// Counts the amount of places the tail has gone in a longer rope
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private int LongerRopeTailVisited(List<string> input)
+        {
+            List<(string Direction, int Steps)> instructions =
+                input.Select(x => x.Split(" ")).Select(x => (x[0], Util.StringToInt(x[1]))).ToList();
+
+            (int rowSize, int colSize, int startX, int startY) = CalculateMatrixSize(instructions);
+
+            int[,] ropeBridgeMatrix = new int[rowSize, colSize];
+            int[,] traversedRopeBridge = ApplyRopeInstructions(instructions, ropeBridgeMatrix, startX, startY, 9);
             return CountPlacesTailHasTraveled(traversedRopeBridge);
         }
 
@@ -56,74 +75,75 @@
         /// <param name="startX"></param>
         /// <param name="startY"></param>
         /// <returns></returns>
-        private int[,] ApplyRopeInstructions(List<(string Direction, int Steps)> instructions, int[,] ropeBridgeMatrix, int startX, int startY)
+        private int[,] ApplyRopeInstructions(List<(string Direction, int Steps)> instructions, int[,] ropeBridgeMatrix, int startX, int startY, int amountOfTails)
         {
-            (int currentHeadX, int currentHeadY) = (startX, startY);
-            (int currentTailX, int currentTailY) = (startX, startY);
+            Dictionary<int, (int positionX, int positionY)> knots = Enumerable.Range(0, amountOfTails + 1)
+                                                                              .ToDictionary(x => x, x => (positionX: startX, positionY: startY));
             ropeBridgeMatrix[startX, startY] = 1;
 
-            try
+            foreach (var instruction in instructions)
             {
-                foreach (var instruction in instructions)
+                for (int i = 1; i <= instruction.Steps; i++)
                 {
+                    var tempKnot = knots[0];
+                    var prevPos = knots[0];
                     switch (instruction.Direction)
                     {
                         case ("U"):
-                            for (int i = 1; i <= instruction.Steps; i++)
-                            {
-                                currentHeadY++;
-                                if (IsMoreThanOneAway(currentHeadX, currentHeadY, currentTailX, currentTailY))
-                                {
-                                    (currentTailX, currentTailY) = (currentHeadX, currentHeadY - 1);
-                                    ropeBridgeMatrix[currentTailX, currentTailY]++;
-                                }
-                            }
+                            tempKnot.positionY++;
                             break;
                         case ("D"):
-                            for (int i = 1; i <= instruction.Steps; i++)
-                            {
-                                currentHeadY--;
-                                if (IsMoreThanOneAway(currentHeadX, currentHeadY, currentTailX, currentTailY))
-                                {
-                                    (currentTailX, currentTailY) = (currentHeadX, currentHeadY + 1);
-                                    ropeBridgeMatrix[currentTailX, currentTailY]++;
-                                }
-                            }
+                            tempKnot.positionY--;
                             break;
                         case ("L"):
-                            for (int i = 1; i <= instruction.Steps; i++)
-                            {
-                                currentHeadX--;
-                                if (IsMoreThanOneAway(currentHeadX, currentHeadY, currentTailX, currentTailY))
-                                {
-                                    (currentTailX, currentTailY) = (currentHeadX + 1, currentHeadY);
-                                    ropeBridgeMatrix[currentTailX, currentTailY]++;
-                                }
-                            }
+                            tempKnot.positionX--;
                             break;
                         case ("R"):
-                            for (int i = 1; i <= instruction.Steps; i++)
-                            {
-                                currentHeadX++;
-                                if (IsMoreThanOneAway(currentHeadX, currentHeadY, currentTailX, currentTailY))
-                                {
-                                    (currentTailX, currentTailY) = (currentHeadX - 1, currentHeadY);
-                                    ropeBridgeMatrix[currentTailX, currentTailY]++;
-                                }
-                            }
+                            tempKnot.positionX++;
                             break;
                     }
+                    knots[0] = tempKnot;
+                    for (int k = 1; k < knots.Count(); k++)
+                    {
+                        if (IsMoreThanOneAway(knots[k - 1].positionX, knots[k - 1].positionY, knots[k].positionX, knots[k].positionY))
+                        {
+                            tempKnot = knots[k];
+
+                            if (Util.Abs(knots[k - 1].positionY - knots[k].positionY) > 0)
+                            {
+                                int add = knots[k - 1].positionY - knots[k].positionY > 0 ? 1 : -1;
+                                tempKnot.positionY += add;
+                            }
+
+                            if (Util.Abs(knots[k - 1].positionX - knots[k].positionX) > 0)
+                            {
+                                int add = knots[k - 1].positionX - knots[k].positionX > 0 ? 1 : -1;
+                                tempKnot.positionX += add;
+                            }
+                            knots[k] = tempKnot;
+
+                            if (k == knots.Count() - 1)
+                            {
+                                ropeBridgeMatrix[knots[k].positionX, knots[k].positionY]++;
+                            }
+                        }
+                    }
                 }
-            }
-            catch(Exception e)
-            {
-                string test = e.Message;
+
             }
             return ropeBridgeMatrix;
         }
 
-        private bool IsMoreThanOneAway(int headX, int headY, int tailX, int tailY) =>
-            Util.Abs(headX - tailX) > 1 || Util.Abs(headY - tailY) > 1;
+        /// <summary>
+        /// Checks if tail is more than one away from head
+        /// </summary>
+        /// <param name="prevX"></param>
+        /// <param name="prevY"></param>
+        /// <param name="currentX"></param>
+        /// <param name="currentY"></param>
+        /// <returns></returns>
+        private bool IsMoreThanOneAway(int prevX, int prevY, int currentX, int currentY) =>
+            Util.Abs(prevX - currentX) > 1 || Util.Abs(prevY - currentY) > 1;
 
         /// <summary>
         /// Calculates the matrix size needed since dynamic matrixes are not supported
