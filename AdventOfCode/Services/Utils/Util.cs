@@ -6,7 +6,10 @@
             int.Parse(c.ToString());
 
         public int StringToInt(string s) =>
-            int.Parse(s.ToString());
+            int.Parse(s);
+
+        public decimal StringToDecimal(string s) =>
+            decimal.Parse(s);
 
         public bool IsNumber(string s) =>
             int.TryParse(s, out _);
@@ -16,5 +19,8 @@
 
         public int Abs(int x) =>
             Math.Abs(x);
+
+        public decimal Floor(decimal d) =>
+            decimal.Floor(d);
     }
 }

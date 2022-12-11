@@ -7,8 +7,8 @@ namespace AdventOfCode.Services.Solvers
         private Task<List<string>> SolveDay11(List<string> input) =>
             Task.FromResult(new List<string>
             {
-                TopTwoMonkeyBusiness(input).ToString(),
-                //LongerRopeTailVisited(input).ToString(),
+                TopTwoMonkeyBusiness(input, 20, 3).ToString(),
+                TopTwoMonkeyBusiness(input, 10000, 1).ToString(),
             });
 
         /// <summary>
@@ -16,14 +16,19 @@ namespace AdventOfCode.Services.Solvers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private int TopTwoMonkeyBusiness(List<string> input)
+        private decimal TopTwoMonkeyBusiness(List<string> input, int rounds, int worryLevel)
         {
             Dictionary<int, Monkey> monkeys = NormaliseInputToMonkey(input);
-            Dictionary<int, Monkey> afterMonkeyInspections = MonkeyInspections(monkeys, 20);
-            return afterMonkeyInspections.Values.OrderByDescending(x => x.AmountOfInspections)
-                                                .Take(2)
-                                                .Select(x => x.AmountOfInspections)
-                                                .Aggregate((a, b) => a * b);
+            Dictionary<int, Monkey> afterMonkeyInspections = MonkeyInspections(monkeys, rounds, worryLevel);
+            List<int> amountOfInspections =
+                afterMonkeyInspections.Values.Select(x => x.AmountOfInspections)
+                                            .OrderByDescending(x => x)
+                                            .ToList();
+            List<int> topTwoInspectorMonkeys = amountOfInspections.Take(2).ToList();
+            decimal top1 = topTwoInspectorMonkeys[0];
+            decimal top2 = topTwoInspectorMonkeys[1];
+            decimal monkeyBusiness = top1 * top2;
+            return monkeyBusiness;
         }
 
         /// <summary>
@@ -32,16 +37,17 @@ namespace AdventOfCode.Services.Solvers
         /// <param name="monkeys"></param>
         /// <param name="rounds"></param>
         /// <returns></returns>
-        private Dictionary<int, Monkey> MonkeyInspections(Dictionary<int, Monkey> monkeys, int rounds)
+        private Dictionary<int, Monkey> MonkeyInspections(Dictionary<int, Monkey> monkeys, int rounds, int worryLevel)
         {
+            decimal lowestSameNumber = monkeys.Values.Select(x => x.TestDivisibleBy).Aggregate((a, b) => a * b);
             for (int i = 0; i < rounds; i++)
             {
                 foreach (var monkey in monkeys)
                 {
-                    foreach (int item in monkey.Value.StartingItems)
+                    foreach (decimal item in monkey.Value.StartingItems)
                     {
                         monkey.Value.AmountOfInspections++;
-                        int val = monkey.Value.Operation.Value == "old" ? item : Util.StringToInt(monkey.Value.Operation.Value);
+                        decimal val = monkey.Value.Operation.Value == "old" ? item : Util.StringToDecimal(monkey.Value.Operation.Value);
                         switch (monkey.Value.Operation.Operator)
                         {
                             case "+":
@@ -51,8 +57,10 @@ namespace AdventOfCode.Services.Solvers
                                 val *= item;
                                 break;
                         }
-                        val = val / 3;
-                        if (val % monkey.Value.TestDivisibleBy == 0)
+                        val = Util.Floor(val / worryLevel);
+                        decimal remainder = val % monkey.Value.TestDivisibleBy;
+                        val = val % lowestSameNumber;
+                        if (remainder == 0)
                         {
                             monkeys[monkey.Value.ThrowToTrue].StartingItems.Add(val);
                         }
@@ -106,13 +114,13 @@ namespace AdventOfCode.Services.Solvers
                     case "Monkey":
                         break;
                     case "Starting":
-                        monkey.StartingItems = splits.Skip(2).Take(splits.Count() - 2).Select(Util.StringToInt).ToList();
+                        monkey.StartingItems = splits.Skip(2).Take(splits.Count() - 2).Select(Util.StringToDecimal).ToList();
                         break;
                     case "Operation":
                         monkey.Operation = (splits[4], splits[5]);
                         break;
                     case "Test":
-                        monkey.TestDivisibleBy = Util.StringToInt(splits[3]);
+                        monkey.TestDivisibleBy = Util.StringToDecimal(splits[3]);
                         break;
                     case "If":
                         switch (splits[1])
@@ -132,9 +140,9 @@ namespace AdventOfCode.Services.Solvers
 
         public class Monkey
         {
-            public List<int> StartingItems { get; set; }
+            public List<decimal> StartingItems { get; set; }
             public (string Operator, string Value) Operation { get; set; }
-            public int TestDivisibleBy { get; set; }
+            public decimal TestDivisibleBy { get; set; }
             public int ThrowToTrue { get; set; }
             public int ThrowToFalse { get; set; }
             public int AmountOfInspections { get; set; } = 0;
